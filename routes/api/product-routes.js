@@ -67,16 +67,20 @@ router.post('/', (req, res) => {
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
-          return {
-            product_id: product.id,
-            tag_id,
+      if (!product) {
+        res.status(404).json ({ message: 'Sorry, no product found with this ID'});
+          return;
           };
-        });
-        return ProductTag.bulkCreate(productTagIdArr);
-      }
-      // if no product tags, just respond
+        if (req.body.tagIds.length) {
+          const productTagIDArr = req.body.tagIds.map((tag_id) => {
+            return {
+              product_id: product.id,
+              tag_id,
+            };
+          });
+          return ProductTag.bulkCreate(productTagIDArr);
+        }
+        // if no product tags, just respond
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
@@ -84,7 +88,7 @@ router.post('/', (req, res) => {
       console.log(err);
       res.status(400).json(err);
     });
-});
+      });
 
 // update product
 router.put('/:id', (req, res) => {
@@ -96,7 +100,12 @@ router.put('/:id', (req, res) => {
   })
     .then((product) => {
       // find all associated tags from ProductTag
-      return ProductTag.findAll({ where: { product_id: req.params.id } });
+      if(!product) {
+        res.status(404).json ({ message: 'Sorry, no product found with this ID'});
+          return;
+      }
+      return ProductTag.findAll({ where: { product_id: req.params.id }});
+      })
     })
     .then((productTags) => {
       // get list of current tag_ids
@@ -126,7 +135,6 @@ router.put('/:id', (req, res) => {
       // console.log(err);
       res.status(400).json(err);
     });
-});
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
