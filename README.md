@@ -9,7 +9,8 @@ SO THAT my company can compete with other e-commerce companies
 ## Built With
 * MYSQL2
 * Sequelize
-* 
+* Express
+* Dotenv
 
 ## Website
 
