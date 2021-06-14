@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
       if (!product) {
         res.status(404).json ({ message: 'Sorry, no product found with this ID'});
           return;
-          };
+      }
         if (req.body.tagIds.length) {
           const productTagIDArr = req.body.tagIds.map((tag_id) => {
             return {
@@ -106,7 +106,6 @@ router.put('/:id', (req, res) => {
       }
       return ProductTag.findAll({ where: { product_id: req.params.id }});
       })
-    })
     .then((productTags) => {
       // get list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
@@ -135,7 +134,7 @@ router.put('/:id', (req, res) => {
       // console.log(err);
       res.status(400).json(err);
     });
-
+  });
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
   Product.destroy({
