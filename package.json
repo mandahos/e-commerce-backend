@@ -21,7 +21,7 @@
   "homepage": "https://github.com/mandahos/e-commerce-backend#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2"
   }
